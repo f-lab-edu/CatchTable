@@ -14,12 +14,12 @@ def create_owners(owner: schema.Owner):
     services.add_owner(owner, unit_of_work.SqlAlchemyUnitOfWork())
 
 
-@app.post("/owners/{owner_id}/restaurants/", status_code=201)
+@app.post("/restaurants/", status_code=201)
 def create_restaurant(owner_id: int, restaurant: schema.Restaurant):
     services.add_restaurant(owner_id, restaurant, unit_of_work.SqlAlchemyUnitOfWork())
 
 
-@app.post("/owners/{owner_id}/restaurants/{restaurant_id}/menu/", status_code=201)
+@app.post("/restaurants/{restaurant_id}/menu/", status_code=201)
 def create_menu(restaurant_id: int, menu: schema.Menu):
     services.add_menu(restaurant_id, menu, unit_of_work.SqlAlchemyUnitOfWork())
 
@@ -33,8 +33,7 @@ def get_restaurant_by_filter(filter: str, value: str):
         raise HTTPException(status_code=404, detail='Unavailable Filter')
     return restaurants
 
-
-""" In progress
+"""In progress
 @app.put("/owners/{owner_id}/restaurants/{restaurant_id}/", response_model=schema.Restaurant)
 def edit_restaurant(restaurant_id: int, restaurant: schema.Restaurant):
 """
