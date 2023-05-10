@@ -4,19 +4,27 @@ import abc
 class AbstractRepository(abc.ABC):
 
     @abc.abstractmethod
-    def add(self, entity):
+    def add(self, model):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get(self, entity, filter, value):
+    def get(self, model, id):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def update(self, entity, filter, value, updates):
+    def list(self, model, **kwargs):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def delete(self, entity, filter, value):
+    def update(self, model, updates):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def delete(self, model):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def refresh(self, model):
         raise NotImplementedError
 
 class SqlAlchemyRepository(AbstractRepository):
@@ -24,33 +32,32 @@ class SqlAlchemyRepository(AbstractRepository):
     def __init__(self, session):
         self.session = session
 
-    def add(self, entity):
-        self.session.add(entity)
+    def add(self, model):
+        self.session.add(model)
 
-    def get(self, entity, filter, value): # arg 파싱찾기
-        query = self.session.query(entity)
+    def get(self, model, id):
+        return self.session.query(model).filter_by(id=id).first()
 
-        # id 빼기
-        if filter == 'id':
-            return query.filter_by(id=value).all()
-        elif filter == 'name':
+    def list(self, model, **kwargs):
+        query = self.session.query(model)
+        filter, value = kwargs['filter'], kwargs['value']
+
+        if filter == 'name':
             return query.filter_by(name=value).all()
         elif filter == 'city':
             return query.filter_by(city=value).all()
         elif filter == 'kind':
             return query.filter_by(kind=value).all()
-        elif filter == 'restaurant_id':
-            return query.filter_by(restaurant_id=value).all()
 
-    def update(self, entity, filter, value, updates):
-        objects = self.get(entity, filter, value)
+    def update(self, model, updates):
         for key, value in updates.items():
-            setattr(objects[0], key, value)
-        self.session.add(objects[0])
-        return objects[0]
+            setattr(model, key, value)
+        self.session.add(model)
+        return model
 
-    def delete(self, entity, filter, value):
-        objects = self.get(entity, filter, value)
-        for object in objects:
-            self.session.delete(object)
+    def delete(self, model):
+        self.session.delete(model)
+
+    def refresh(self, model):
+        self.session.refresh(model)
 

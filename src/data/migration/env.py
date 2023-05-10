@@ -5,7 +5,7 @@ from alembic import context
 
 import sys, os
 
-from app.allocation.adapters import orm
+from app.allocation.domain import model
 
 sys.path.append(os.path.abspath('..'))
 
