@@ -27,9 +27,10 @@ class SqlAlchemyRepository(AbstractRepository):
     def add(self, entity):
         self.session.add(entity)
 
-    def get(self, entity, filter, value):
+    def get(self, entity, filter, value): # arg 파싱찾기
         query = self.session.query(entity)
 
+        # id 빼기
         if filter == 'id':
             return query.filter_by(id=value).all()
         elif filter == 'name':

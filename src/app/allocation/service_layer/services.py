@@ -41,6 +41,7 @@ def add_menu(
 def get_restaurants(filter: str,
                    value: Union[str, int],
                    uow: unit_of_work.AbstractUnitOfWork):
+    #
     if filter not in ['id', 'name', 'city', 'kind']:
         return None
     with uow:
@@ -58,9 +59,9 @@ def update_restaurant(restaurant_id: int,
                                          'id',
                                          restaurant_id,
                                          updates)
-        results = schemas.Restaurant.from_orm(restaurant)
+        result = schemas.Restaurant.from_orm(restaurant)
         uow.commit()
-    return results
+    return result
 
 
 def delete_restaurant(restaurant_id: int, uow: unit_of_work.AbstractUnitOfWork):

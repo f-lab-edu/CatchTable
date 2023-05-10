@@ -23,6 +23,7 @@ def create_restaurant(owner_id: int, restaurant: schemas.Restaurant):
 @app.post("/restaurants/{restaurant_id}/menu/", status_code=201)
 def create_menu(restaurant_id: int, menu: schemas.Menu):
     services.add_menu(restaurant_id, menu, unit_of_work.SqlAlchemyUnitOfWork())
+    # return 객체 보통해줌
 
 
 @app.get("/restaurants/", response_model=List[schemas.Restaurant])
@@ -48,10 +49,5 @@ def delete_restaurant(restaurant_id: int):
                                       unit_of_work.SqlAlchemyUnitOfWork())
 
 
-
-""" 
-1. menu 관련된 Post, Get, Put  메소드 관련 질문
-2. 아직 예외 처리가 안 되어있음
-"""
 
 

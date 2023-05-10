@@ -40,7 +40,6 @@ Restaurant = Table(
     Column("kind", String(255)),
     Column("date_of_creation", DateTime, default=datetime.now),
     Column("date_of_update", DateTime, default=datetime.now),
-    # Column("menu", model.Menu),,
 )
 
 Menu = Table(
