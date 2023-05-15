@@ -2,10 +2,18 @@ from app.allocation.domain import schemas, model
 from app.allocation.service_layer import unit_of_work
 from typing import Union
 
+class NotFoundException(Exception):
+    pass
 
-## POST
+class DuplicatedException(Exception):
+    pass
+
+
 def add_owner(schema: schemas.Owner, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
+        if uow.batches.is_owner_existed(model.Owner, schema.name, schema.phone):
+            raise DuplicatedException(f"existed data")
+
         owner = model.Owner(name=schema.name, phone=schema.phone, email=schema.email)
         uow.batches.add(owner)
         uow.commit()
@@ -16,13 +24,20 @@ def add_owner(schema: schemas.Owner, uow: unit_of_work.AbstractUnitOfWork):
 
 def add_restaurant(owner_id: int, schema: schemas.Restaurant, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
+        if not uow.batches.get(model.Owner, owner_id):
+            raise NotFoundException(f"invalid id")
+
+        if uow.batches.is_restaurant_existed(model.Restaurant, owner_id, schema.name, schema.address):
+            raise DuplicatedException(f"existed data")
+
         restaurant = model.Restaurant(name=schema.name,
-                                         owner_id=owner_id,
-                                         description=schema.description,
-                                         phone=schema.phone,
-                                         address=schema.address,
-                                         city=schema.city,
-                                         kind=schema.kind)
+                                     owner_id=owner_id,
+                                     description=schema.description,
+                                     phone=schema.phone,
+                                     address=schema.address,
+                                     city=schema.city,
+                                     kind=schema.kind)
+
         uow.batches.add(restaurant)
         uow.commit()
         uow.batches.refresh(restaurant)
@@ -32,7 +47,13 @@ def add_restaurant(owner_id: int, schema: schemas.Restaurant, uow: unit_of_work.
 
 def add_menu(restaurant_id: int, schema: schemas.Menu, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
-        menu = model.Menu(menu=schema.menu, id=restaurant_id)
+        if not uow.batches.get(model.Restaurant, restaurant_id):
+            raise NotFoundException(f"invalid id")
+
+        if uow.batches.get_menu(model.Menu, restaurant_id):
+            raise DuplicatedException(f"existed data")
+
+        menu = model.Menu(menu=schema.menu, restaurant_id=restaurant_id)
         uow.batches.add(menu)
         uow.commit()
         uow.batches.refresh(menu)
@@ -40,7 +61,6 @@ def add_menu(restaurant_id: int, schema: schemas.Menu, uow: unit_of_work.Abstrac
     return result
 
 
-## GET
 def get_restaurant(id: int, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
         restaurant = uow.batches.get(model.Restaurant, id)
@@ -48,28 +68,27 @@ def get_restaurant(id: int, uow: unit_of_work.AbstractUnitOfWork):
     return result
 
 
-def get_menu_for_restaurant(id: int, uow: unit_of_work.AbstractUnitOfWork):
+def get_menu_for_restaurant(restaurant_id: int, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
-        menu = uow.batches.get(model.Menu, id)
+        menu = uow.batches.get_menu(model.Menu, restaurant_id)
         result = schemas.Menu.from_orm(menu)
     return result
 
 
 def get_restaurant_list(filter: str, value: Union[str, int], uow: unit_of_work.AbstractUnitOfWork):
     if filter not in ['name', 'city', 'kind']:
-        return None
+        return None # raise로 고칠 것
     with uow:
         restaurants = uow.batches.list(model.Restaurant, filter=filter, value=value)
         results = [schemas.Restaurant.from_orm(r) for r in restaurants]
     return results
 
 
-## PUT
 def update_restaurant(id: int, schema: schemas.Restaurant, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
         restaurant = uow.batches.get(model.Restaurant, id)
         if not restaurant:
-            return None
+            return None # raise로 고칠 것
 
         updates = schema.dict(exclude_unset=True)
         restaurant = uow.batches.update(restaurant, updates)
@@ -78,11 +97,11 @@ def update_restaurant(id: int, schema: schemas.Restaurant, uow: unit_of_work.Abs
     return result
 
 
-def update_menu(id: int, schema: schemas.Menu, uow: unit_of_work.AbstractUnitOfWork):
+def update_menu(restaurant_id: int, schema: schemas.Menu, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
-        menu = uow.batches.get(model.Menu, id)
+        menu = uow.batches.get_menu(model.Menu, restaurant_id)
         if not menu:
-            return None
+            return None  # raise로 고칠 것
 
         updates = schema.dict(exclude_unset=True)
         result = schemas.Menu.from_orm(uow.batches.update(menu, updates))
@@ -90,18 +109,27 @@ def update_menu(id: int, schema: schemas.Menu, uow: unit_of_work.AbstractUnitOfW
     return result
 
 
-## DELETE
 def delete_restaurant(id: int, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
-        menu = uow.batches.get(model.Menu, id)
-        if not menu:
-            return None
+        # menu = uow.batches.get_menu(model.Menu, id)
+        # if not menu:
+        #     return None # raise로, menu가 없어도 restaurant을 지울 수 있어야 한다
 
         restaurant = uow.batches.get(model.Restaurant, id)
         if not restaurant:
-            return None
+            return None # raise로
 
-        uow.batches.delete(menu)
         uow.batches.delete(restaurant)
         uow.commit()
     return restaurant
+
+
+def delete_owner(id: int, uow: unit_of_work.AbstractUnitOfWork):
+    with uow:
+        owner = uow.batches.get(model.Owner, id)
+        if not owner:
+            return None # raise로
+
+        uow.batches.delete(owner)
+        uow.commit()
+    return owner

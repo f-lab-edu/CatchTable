@@ -1,4 +1,5 @@
 import abc
+from datetime import datetime
 
 
 class AbstractRepository(abc.ABC):
@@ -12,7 +13,7 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def list(self, model, **kwargs):
+    def list(self, model, filter, value):
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -38,9 +39,11 @@ class SqlAlchemyRepository(AbstractRepository):
     def get(self, model, id):
         return self.session.query(model).filter_by(id=id).first()
 
-    def list(self, model, **kwargs):
+    def get_menu(self, model, restaurant_id):
+        return self.session.query(model).filter_by(restaurant_id=restaurant_id).first()
+
+    def list(self, model, filter=None, value=None):
         query = self.session.query(model)
-        filter, value = kwargs['filter'], kwargs['value']
 
         if filter == 'name':
             return query.filter_by(name=value).all()
@@ -60,4 +63,10 @@ class SqlAlchemyRepository(AbstractRepository):
 
     def refresh(self, model):
         self.session.refresh(model)
+
+    def is_owner_existed(self, model, name, phone):
+        return self.session.query(model).filter_by(name=name, phone=phone).first()
+
+    def is_restaurant_existed(self, model, owner_id, name, address):
+        return self.session.query(model).filter_by(owner_id=owner_id, name=name, address=address).first()
 
