@@ -1,34 +1,8 @@
-import abc
 from app.allocation.domain import model as domain
+from app.allocation.adapters.repository import AbstractRepository
 
 
-class AbstractRepository(abc.ABC):
-
-    @abc.abstractmethod
-    def add(self, model):
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def get(self, model, id):
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def list(self, model, filter, value):
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def update(self, model, updates):
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def delete(self, model):
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def refresh(self, model):
-        raise NotImplementedError
-
-class SqlAlchemyRepository(AbstractRepository):
+class FakeRepository(AbstractRepository):
 
     def __init__(self, session):
         self.session = session

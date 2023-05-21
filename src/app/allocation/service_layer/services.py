@@ -1,18 +1,12 @@
 from app.allocation.domain import schemas, model
-from app.allocation.service_layer import unit_of_work
+from app.allocation.service_layer import unit_of_work, errors
 from typing import Union
-
-class NotFoundException(Exception):
-    pass
-
-class DuplicatedException(Exception):
-    pass
 
 
 def add_owner(schema: schemas.Owner, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
-        if uow.batches.is_owner_existed(model.Owner, schema.name, schema.phone):
-            raise DuplicatedException(f"existed data")
+        if uow.batches.is_owner_existed(schema.name, schema.phone):
+            raise errors.DuplicatedException(f"existed data")
 
         owner = model.Owner(name=schema.name, phone=schema.phone, email=schema.email)
         uow.batches.add(owner)
@@ -25,10 +19,10 @@ def add_owner(schema: schemas.Owner, uow: unit_of_work.AbstractUnitOfWork):
 def add_restaurant(owner_id: int, schema: schemas.Restaurant, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
         if not uow.batches.get(model.Owner, owner_id):
-            raise NotFoundException(f"invalid id")
+            raise errors.NotFoundException(f"invalid id")
 
-        if uow.batches.is_restaurant_existed(model.Restaurant, owner_id, schema.name, schema.address):
-            raise DuplicatedException(f"existed data")
+        if uow.batches.is_restaurant_existed(owner_id, schema.name, schema.address):
+            raise errors.DuplicatedException(f"existed data")
 
         restaurant = model.Restaurant(name=schema.name,
                                      owner_id=owner_id,
@@ -48,10 +42,10 @@ def add_restaurant(owner_id: int, schema: schemas.Restaurant, uow: unit_of_work.
 def add_menu(restaurant_id: int, schema: schemas.Menu, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
         if not uow.batches.get(model.Restaurant, restaurant_id):
-            raise NotFoundException(f"invalid id")
+            raise errors.NotFoundException(f"invalid id")
 
-        if uow.batches.get_menu(model.Menu, restaurant_id):
-            raise DuplicatedException(f"existed data")
+        if uow.batches.get_menu(restaurant_id):
+            raise errors.DuplicatedException(f"existed data")
 
         menu = model.Menu(menu=schema.menu, restaurant_id=restaurant_id)
         uow.batches.add(menu)
@@ -61,6 +55,7 @@ def add_menu(restaurant_id: int, schema: schemas.Menu, uow: unit_of_work.Abstrac
     return result
 
 
+# restaurant이 존재하지 않는데도 계속 get을 해오고 있어!!!!!!!!
 def get_restaurant(id: int, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
         restaurant = uow.batches.get(model.Restaurant, id)
@@ -70,7 +65,7 @@ def get_restaurant(id: int, uow: unit_of_work.AbstractUnitOfWork):
 
 def get_menu_for_restaurant(restaurant_id: int, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
-        menu = uow.batches.get_menu(model.Menu, restaurant_id)
+        menu = uow.batches.get_menu(restaurant_id)
         result = schemas.Menu.from_orm(menu)
     return result
 
@@ -99,7 +94,7 @@ def update_restaurant(id: int, schema: schemas.Restaurant, uow: unit_of_work.Abs
 
 def update_menu(restaurant_id: int, schema: schemas.Menu, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
-        menu = uow.batches.get_menu(model.Menu, restaurant_id)
+        menu = uow.batches.get_menu(restaurant_id)
         if not menu:
             return None  # raise로 고칠 것
 
@@ -111,10 +106,6 @@ def update_menu(restaurant_id: int, schema: schemas.Menu, uow: unit_of_work.Abst
 
 def delete_restaurant(id: int, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
-        # menu = uow.batches.get_menu(model.Menu, id)
-        # if not menu:
-        #     return None # raise로, menu가 없어도 restaurant을 지울 수 있어야 한다
-
         restaurant = uow.batches.get(model.Restaurant, id)
         if not restaurant:
             return None # raise로

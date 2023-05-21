@@ -1,12 +1,6 @@
 from __future__ import annotations
 import abc
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from app.allocation.adapters import repository
-from app.allocation import config
-
-Engine = create_engine(config.get_postgres_uri(), isolation_level="REPEATABLE READ")
-DEFAULT_SESSION_FACTORY = sessionmaker(bind=Engine)
 
 class AbstractUnitOfWork(abc.ABC):
 
@@ -29,7 +23,7 @@ class AbstractUnitOfWork(abc.ABC):
 
 class SqlAlchemyUnitOfWork(AbstractUnitOfWork):
 
-    def __init__(self, session_factory=DEFAULT_SESSION_FACTORY):
+    def __init__(self, session_factory):
         self.session_factory = session_factory
 
     def __enter__(self):
