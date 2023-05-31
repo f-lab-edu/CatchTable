@@ -1,9 +1,6 @@
 name: pr test
 
-on:
-  pull_request:
-    branches:
-      - 'feature/**'
+on: [push, pull_request]
 
 jobs:
   test:
