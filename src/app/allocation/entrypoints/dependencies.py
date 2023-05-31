@@ -5,13 +5,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 
-def get_session():
-    Engine = create_engine(config.get_postgres_uri(), isolation_level="REPEATABLE READ")
-    model.Base.metadata.create_all(bind=Engine)
-    return sessionmaker(bind=Engine)
 
 def get_uow():
-    return unit_of_work.SqlAlchemyUnitOfWork(get_session())
+    Engine = create_engine(config.get_postgres_uri(), isolation_level="REPEATABLE READ")
+    model.Base.metadata.create_all(bind=Engine)
+    return unit_of_work.SqlAlchemyUnitOfWork(sessionmaker(bind=Engine))
 
 
 

@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends
 from app.allocation.domain import schemas
 from app.allocation.entrypoints.dependencies import get_uow
-from app.allocation.service_layer import services, errors
+from app.allocation.service_layer import errors
+from app.allocation.service_layer.services import menu as services
 
 router = APIRouter()
 

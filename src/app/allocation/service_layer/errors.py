@@ -6,3 +6,7 @@ class NotFoundException(Exception):
 
 class DuplicatedException(Exception):
     pass
+
+class InvalidDataException(Exception):
+    pass
+
