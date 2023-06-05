@@ -14,7 +14,6 @@ Base = declarative_base()
 
 class Owner(Base):
     __tablename__ = "owner"
-    Column()
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(255))
     phone = Column(String(255))

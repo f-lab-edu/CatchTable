@@ -1,34 +1,8 @@
-import abc
 from app.allocation.domain import model as domain
+from app.allocation.adapters.repository import AbstractRepository
 
 
-class AbstractRepository(abc.ABC):
-
-    @abc.abstractmethod
-    def add(self, model):
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def get(self, model, id):
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def list(self, model):
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def update(self, model, updates):
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def delete(self, model):
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def refresh(self, model):
-        raise NotImplementedError
-
-class SqlAlchemyRepository(AbstractRepository):
+class FakeRepository(AbstractRepository):
 
     def __init__(self, session):
         self.session = session
@@ -42,10 +16,7 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_menu(self, restaurant_id):
         return self.session.query(domain.Menu).filter_by(restaurant_id=restaurant_id).first()
 
-    def list(self, model):
-        return self.session.query(model).all()
-
-    def list_restaurants(self, model, filter=None, value=None):
+    def list(self, model, filter=None, value=None):
         query = self.session.query(model)
 
         if filter == 'name':
