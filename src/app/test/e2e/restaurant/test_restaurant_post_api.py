@@ -1,6 +1,3 @@
-
-
-
 def test_add_restaurant_returns_201(client, owner_id, restaurant_ex, owner_ex):
     response_owner = client.post("/owners/", json=owner_ex)
     assert response_owner.status_code == 201

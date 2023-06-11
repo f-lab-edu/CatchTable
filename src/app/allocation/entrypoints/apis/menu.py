@@ -19,15 +19,17 @@ def add_menu(id: int, menu: schemas.Menu, uow=Depends(get_uow)):
 
 @router.get("/restaurants/{id}/menus/", response_model=schemas.Menu)
 def get_menu(id: int, uow=Depends(get_uow)):
-    result = services.get_menu_for_restaurant(id, uow)
-    if result is None:
+    try:
+        result = services.get_menu_for_restaurant(id, uow)
+    except errors.NotFoundException:
         raise HTTPException(status_code=404, detail='Unavailable data')
     return result
 
 
 @router.put("/restaurants/{id}/menus/", response_model=schemas.Menu)
 def update_menu(id: int, menu: schemas.Menu, uow=Depends(get_uow)):
-    result = services.update_menu(id, menu, uow)
-    if result is None:
+    try:
+        result = services.update_menu(id, menu, uow)
+    except errors.NotFoundException:
         raise HTTPException(status_code=404, detail='Unavailable data')
     return result

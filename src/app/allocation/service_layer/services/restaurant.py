@@ -28,20 +28,23 @@ def add_restaurant(owner_id: int, schema: schemas.Restaurant, uow: unit_of_work.
     return result
 
 
-# 해당 id가 없어도 불러오는 현상 존재, test 코드 작성해서 exception 잡기
 def get_restaurant(id: int, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
         restaurant = uow.batches.get(model.Restaurant, id)
         result = schemas.Restaurant.from_orm(restaurant)
+        if not all(result.dict().values()):
+            raise errors.NotFoundException(f"data not existed")
     return result
 
 
 def get_restaurant_list(filter: str, value: Union[str, int], uow: unit_of_work.AbstractUnitOfWork):
     if filter not in ['name', 'city', 'kind']:
-        return None # raise로 고칠 것
+        raise errors.NotFoundException(f"filter not existed")
     with uow:
         restaurants = uow.batches.list_restaurants(model.Restaurant, filter=filter, value=value)
         results = [schemas.Restaurant.from_orm(r) for r in restaurants]
+        if not results:
+            raise errors.NotFoundException(f"data not existed")
     return results
 
 
@@ -49,7 +52,7 @@ def update_restaurant(id: int, schema: schemas.Restaurant, uow: unit_of_work.Abs
     with uow:
         restaurant = uow.batches.get(model.Restaurant, id)
         if not restaurant:
-            return None # raise로 고칠 것
+            raise errors.NotFoundException(f"data not existed")
 
         updates = schema.dict(exclude_unset=True)
         restaurant = uow.batches.update(restaurant, updates)
@@ -62,7 +65,7 @@ def delete_restaurant(id: int, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
         restaurant = uow.batches.get(model.Restaurant, id)
         if not restaurant:
-            return None # raise로
+            raise errors.NotFoundException(f"data not existed")
 
         uow.batches.delete(restaurant)
         uow.commit()

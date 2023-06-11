@@ -21,6 +21,8 @@ def add_menu(restaurant_id: int, schema: schemas.Menu, uow: unit_of_work.Abstrac
 def get_menu_for_restaurant(restaurant_id: int, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
         menu = uow.batches.get_menu(restaurant_id)
+        if not menu:
+            raise errors.NotFoundException(f"data not existed")
         result = schemas.Menu.from_orm(menu)
     return result
 
@@ -29,8 +31,7 @@ def update_menu(restaurant_id: int, schema: schemas.Menu, uow: unit_of_work.Abst
     with uow:
         menu = uow.batches.get_menu(restaurant_id)
         if not menu:
-            return None  # raise로 고칠 것
-
+            raise errors.NotFoundException(f"data not existed")
         updates = schema.dict(exclude_unset=True)
         result = schemas.Menu.from_orm(uow.batches.update(menu, updates))
         uow.commit()

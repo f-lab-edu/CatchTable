@@ -16,7 +16,10 @@ class FakeRepository(AbstractRepository):
     def get_menu(self, restaurant_id):
         return self.session.query(domain.Menu).filter_by(restaurant_id=restaurant_id).first()
 
-    def list(self, model, filter=None, value=None):
+    def list(self, model):
+        return self.session.query(model).all()
+
+    def list_restaurants(self, model, filter=None, value=None):
         query = self.session.query(model)
 
         if filter == 'name':
