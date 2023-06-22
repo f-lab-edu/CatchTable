@@ -1,7 +1,5 @@
-from typing import List, Union, Dict
+from typing import Union, Dict
 from pydantic import BaseModel
-
-
 
 class Restaurant(BaseModel):
     name: Union[str, None] = None

@@ -8,7 +8,7 @@ app.include_router(restaurant.router)
 app.include_router(menu.router)
 
 @app.get("/")
-def root():
+async def root():
     return {"message": "Welcome to Catch Table"}
 
 

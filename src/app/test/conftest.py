@@ -7,13 +7,19 @@ from app.allocation.entrypoints.dependencies import get_uow
 from app.allocation.entrypoints.fastapi_app import app
 from app.test.integration import fake_unit_of_work
 from app.allocation.domain import model
+
 from app.test.unit.owner.conftest import *
-from app.test.unit.restaurant.conftest import *
 from app.test.unit.menu.conftest import *
+from app.test.unit.restaurant.conftest import *
+from app.test.e2e.owner.conftest import *
+from app.test.e2e.menu.conftest import *
+from app.test.e2e.restaurant.conftest import *
+
 
 
 engine = create_engine("sqlite:///./test.db", connect_args={"check_same_thread": False})
 session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
 
 @pytest.fixture()
 def override_get_uow():

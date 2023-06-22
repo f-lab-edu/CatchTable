@@ -7,7 +7,7 @@ from app.allocation.service_layer.services import menu as services
 router = APIRouter()
 
 @router.post("/restaurants/{id}/menus/", status_code=201, response_model=schemas.Menu)
-def add_menu(id: int, menu: schemas.Menu, uow=Depends(get_uow)):
+async def add_menu(id: int, menu: schemas.Menu, uow=Depends(get_uow)):
     try:
         result = services.add_menu(id, menu, uow)
     except errors.NotFoundException:
@@ -18,7 +18,7 @@ def add_menu(id: int, menu: schemas.Menu, uow=Depends(get_uow)):
 
 
 @router.get("/restaurants/{id}/menus/", response_model=schemas.Menu)
-def get_menu(id: int, uow=Depends(get_uow)):
+async def get_menu(id: int, uow=Depends(get_uow)):
     try:
         result = services.get_menu_for_restaurant(id, uow)
     except errors.NotFoundException:
@@ -27,7 +27,7 @@ def get_menu(id: int, uow=Depends(get_uow)):
 
 
 @router.put("/restaurants/{id}/menus/", response_model=schemas.Menu)
-def update_menu(id: int, menu: schemas.Menu, uow=Depends(get_uow)):
+async def update_menu(id: int, menu: schemas.Menu, uow=Depends(get_uow)):
     try:
         result = services.update_menu(id, menu, uow)
     except errors.NotFoundException:

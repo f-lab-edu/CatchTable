@@ -9,7 +9,7 @@ from typing_extensions import Annotated
 router = APIRouter()
 
 @router.post("/restaurants/", status_code=201, response_model=schemas.Restaurant)
-def add_restaurant(owner_id: int, restaurant: schemas.Restaurant, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
+async def add_restaurant(owner_id: int, restaurant: schemas.Restaurant, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
     try:
         result = services.add_restaurant(owner_id, restaurant, uow)
     except errors.NotFoundException:
@@ -22,7 +22,7 @@ def add_restaurant(owner_id: int, restaurant: schemas.Restaurant, uow: Annotated
 
 
 @router.get("/restaurants/{id}/", response_model=schemas.Restaurant)
-def get_restaurant(id: int, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
+async def get_restaurant(id: int, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
     try:
         result = services.get_restaurant(id, uow)
     except errors.NotFoundException:
@@ -31,7 +31,7 @@ def get_restaurant(id: int, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depe
 
 
 @router.get("/restaurants/", response_model=List[schemas.Restaurant])
-def get_restaurant_list(filter: str, value: Union[str, int], uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
+async def get_restaurant_list(filter: str, value: Union[str, int], uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
     try:
         result = services.get_restaurant_list(filter, value, uow)
     except errors.NotFoundException:
@@ -40,7 +40,7 @@ def get_restaurant_list(filter: str, value: Union[str, int], uow: Annotated[unit
 
 
 @router.put("/restaurants/{id}/", response_model=schemas.Restaurant)
-def update_restaurant(id: int, restaurant: schemas.Restaurant, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
+async def update_restaurant(id: int, restaurant: schemas.Restaurant, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
     try:
         result = services.update_restaurant(id, restaurant, uow)
     except errors.NotFoundException:
@@ -49,7 +49,7 @@ def update_restaurant(id: int, restaurant: schemas.Restaurant, uow: Annotated[un
 
 
 @router.delete("/restaurants/{id}/", response_model=schemas.Restaurant)
-def delete_restaurant(id: int, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
+async def delete_restaurant(id: int, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
     try:
         result = services.delete_restaurant(id, uow)
     except errors.NotFoundException:

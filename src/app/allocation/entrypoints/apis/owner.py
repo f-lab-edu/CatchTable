@@ -10,7 +10,7 @@ router = APIRouter()
 
 
 @router.post("/owners/", status_code=201, response_model=schemas.Owner)
-def add_owner(owner: schemas.Owner, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
+async def add_owner(owner: schemas.Owner, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
     try:
         result = services.add_owner(owner, uow)
     except errors.InvalidDataException:
@@ -21,7 +21,7 @@ def add_owner(owner: schemas.Owner, uow: Annotated[unit_of_work.AbstractUnitOfWo
 
 
 @router.get("/owners/{id}/", response_model=schemas.Owner)
-def get_owner(id: int, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
+async def get_owner(id: int, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
     try:
         result = services.get_owner(id, uow)
     except errors.NotFoundException:
@@ -30,7 +30,7 @@ def get_owner(id: int, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(g
 
 
 @router.get("/owners/", response_model=List[schemas.Owner])
-def get_owner_list(uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
+async def get_owner_list(uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
     try:
         result = services.get_owner_list(uow)
     except errors.NotFoundException:
@@ -39,7 +39,7 @@ def get_owner_list(uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_u
 
 
 @router.put("/owners/{id}/", response_model=schemas.Owner)
-def update_owner(id: int, owner: schemas.Owner, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
+async def update_owner(id: int, owner: schemas.Owner, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
     try:
         result = services.update_owner(id, owner, uow)
     except errors.NotFoundException:
@@ -48,7 +48,7 @@ def update_owner(id: int, owner: schemas.Owner, uow: Annotated[unit_of_work.Abst
 
 
 @router.delete("/owners/{id}/", response_model=schemas.Owner)
-def delete_owner(id: int, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
+async def delete_owner(id: int, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
     try:
         result = services.delete_owner(id, uow)
     except errors.NotFoundException:

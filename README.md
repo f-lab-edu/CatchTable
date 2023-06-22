@@ -1,11 +1,31 @@
-CatchTable
+CatchTable - Restful API server
 =============
-전국의 맛집을 찾고 예약할 수 있는 중개 플랫폼 서버입니다.<br>
-Fast API 프레임워크를 사용해 REST API 서버를 구현하고, TDD 기반 Clean Architecture를 구성하여 
-개발하고 있습니다.
+전국의 레스토랑을 찾고 예약할 수 있는 중개 플랫폼 서버입니다.<br>
+Fast API 프레임워크를 사용해 REST API 서버를 구현했습니다.<br>
+Clean Architecture를 구성하려고 노력하였고, 테스트 주도 개발을 하였습니다.
+Gitflow를 이용하여 Master, Develop, Feature로 branch를 구분하여 관리합니다.
 
-## 프로젝트의 전체적인 서버 구조
-![CatchTable 서버 구조도](https://github.com/teeinn/CatchTable/assets/45514456/1d437e32-384a-4d7f-8910-6536f68b13a8)
+## CatchTable 서버 구조
+![CatchTable server architecture](server_architecture.png)
 
-## 프로젝트의 Architecture 구조 
-![clean architecture drawio (2) (1)](https://github.com/teeinn/CatchTable/assets/45514456/41a0c066-a7b3-4981-af8b-d102a63e1855)
+## CatchTable Architecture 구조 
+![CatchTable architecture](clean_architecture.png)
+
+## Environments
+1. Python3.8
+2. Docker 1.42 (minimum 1.12)
+3. Ubuntu 20.04
+
+## Installing dependencies
+1. Create virtualenv
+```sh
+$ pip3 install virtualenv
+$ virtualenv env
+$ source env/bin/activate
+```
+2. Install dependencies
+```sh
+$ git clone https://github.com/f-lab-edu/CatchTable.git
+$ cd CatchTable
+$ pip install -r requirements.txt
+```
