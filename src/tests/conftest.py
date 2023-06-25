@@ -1,12 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from fastapi.testclient import TestClient
-from app.entrypoints.dependencies import get_uow
-from app.entrypoints.fastapi_app import app
+from src.app.entrypoints.dependencies import get_uow
+from src.app.entrypoints.fastapi_app import app
 from tests.unit import fake_unit_of_work
-from app.domain import model
-
-from tests.unit.menu.conftest import *
+from src.app.domain import model
+import pytest
 
 engine = create_engine("sqlite:///./tests.db", connect_args={"check_same_thread": False})
 session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)

@@ -5,13 +5,13 @@ from typing import Union
 
 def add_restaurant(owner_id: int, schema: schemas.Restaurant, uow: unit_of_work.AbstractUnitOfWork):
     if None in vars(schema).values():
-        raise errors.InvalidDataException(f"invalid data")
+        raise errors.InvalidDataException("invalid data")
     with uow:
         if not uow.batches.get(model.Owner, owner_id):
-            raise errors.NotFoundException(f"invalid id")
+            raise errors.NotFoundException("invalid id")
 
         if uow.batches.is_restaurant_existed(owner_id, schema.name, schema.address):
-            raise errors.DuplicatedException(f"existed data")
+            raise errors.DuplicatedException("existed data")
 
         restaurant = model.Restaurant(name=schema.name,
                                       owner_id=owner_id,
@@ -33,18 +33,18 @@ def get_restaurant(id: int, uow: unit_of_work.AbstractUnitOfWork):
         restaurant = uow.batches.get(model.Restaurant, id)
         result = schemas.Restaurant.from_orm(restaurant)
         if not all(result.dict().values()):
-            raise errors.NotFoundException(f"data not existed")
+            raise errors.NotFoundException("data not existed")
     return result
 
 
 def get_restaurant_list(filter: str, value: Union[str, int], uow: unit_of_work.AbstractUnitOfWork):
     if filter not in ['name', 'city', 'kind']:
-        raise errors.NotFoundException(f"filter not existed")
+        raise errors.NotFoundException("filter not existed")
     with uow:
         restaurants = uow.batches.list_restaurants(model.Restaurant, filter=filter, value=value)
         results = [schemas.Restaurant.from_orm(r) for r in restaurants]
         if not results:
-            raise errors.NotFoundException(f"data not existed")
+            raise errors.NotFoundException("data not existed")
     return results
 
 
@@ -52,7 +52,7 @@ def update_restaurant(id: int, schema: schemas.Restaurant, uow: unit_of_work.Abs
     with uow:
         restaurant = uow.batches.get(model.Restaurant, id)
         if not restaurant:
-            raise errors.NotFoundException(f"data not existed")
+            raise errors.NotFoundException("data not existed")
 
         updates = schema.dict(exclude_unset=True)
         restaurant = uow.batches.update(restaurant, updates)
@@ -65,7 +65,7 @@ def delete_restaurant(id: int, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
         restaurant = uow.batches.get(model.Restaurant, id)
         if not restaurant:
-            raise errors.NotFoundException(f"data not existed")
+            raise errors.NotFoundException("data not existed")
 
         uow.batches.delete(restaurant)
         uow.commit()
