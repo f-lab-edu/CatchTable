@@ -1,7 +1,7 @@
 import pytest
-from src.app.domain.schemas import Restaurant
+from app.domain.schemas import Restaurant
 from tests.unit.owner.conftest import *
-from src.app.service_layer.services import owner, restaurant
+from app.service_layer.services import owner, restaurant
 
 
 @pytest.fixture

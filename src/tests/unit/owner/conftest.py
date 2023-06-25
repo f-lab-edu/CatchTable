@@ -1,6 +1,6 @@
 import pytest
-from src.app.domain.schemas import Owner
-from src.app.service_layer.services import owner
+from app.domain.schemas import Owner
+from app.service_layer.services import owner
 
 
 @pytest.fixture

@@ -1,10 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from fastapi.testclient import TestClient
-from src.app.entrypoints.dependencies import get_uow
-from src.app.entrypoints.fastapi_app import app
+from app.entrypoints.dependencies import get_uow
+from app.entrypoints.fastapi_app import app
 from tests.unit import fake_unit_of_work
-from src.app.domain import model
+from app.domain import model
 import pytest
 
 engine = create_engine("sqlite:///./tests.db", connect_args={"check_same_thread": False})

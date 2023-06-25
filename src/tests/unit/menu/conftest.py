@@ -1,7 +1,7 @@
 import pytest
-from src.app.domain.schemas import Menu
+from app.domain.schemas import Menu
 from tests.unit.restaurant.conftest import *
-from src.app.service_layer.services import menu
+from app.service_layer.services import menu
 
 @pytest.fixture
 def menu_ex():

@@ -1,5 +1,5 @@
-from src.app.domain import model as domain
-from src.app.adapters.repository import AbstractRepository
+from app.domain import model as domain
+from app.adapters.repository import AbstractRepository
 
 
 class FakeRepository(AbstractRepository):

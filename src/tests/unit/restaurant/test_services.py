@@ -1,7 +1,7 @@
 import pytest
-import src.app.domain.model as model
-from src.app.service_layer import errors
-from src.app.service_layer.services import restaurant
+import app.domain.model as model
+from app.service_layer import errors
+from app.service_layer.services import restaurant
 
 def test_add_restaurant(override_get_uow, create_owner, restaurant_ex):
     restaurant.add_restaurant(1, restaurant_ex, override_get_uow)

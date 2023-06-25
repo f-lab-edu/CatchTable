@@ -1,7 +1,7 @@
 import pytest
-import src.app.domain.model as model
-from src.app.service_layer import errors
-from src.app.service_layer.services import owner
+import app.domain.model as model
+from app.service_layer import errors
+from app.service_layer.services import owner
 
 def test_add_owner(override_get_uow, owner_ex):
     owner.add_owner(owner_ex, override_get_uow)

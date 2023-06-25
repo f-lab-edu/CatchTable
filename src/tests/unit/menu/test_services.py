@@ -1,7 +1,7 @@
 import pytest
-import src.app.domain.model as model
-from src.app.service_layer import errors
-from src.app.service_layer.services import menu
+import app.domain.model as model
+from app.service_layer import errors
+from app.service_layer.services import menu
 
 
 def test_add_menu(override_get_uow, create_restaurant, menu_ex):
