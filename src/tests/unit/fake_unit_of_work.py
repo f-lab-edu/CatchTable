@@ -1,5 +1,5 @@
 from __future__ import annotations
-from app.service_layer.unit_of_work import AbstractUnitOfWork
+from src.app.service_layer.unit_of_work import AbstractUnitOfWork
 from tests.unit import fake_repository
 
 
