@@ -1,7 +1,5 @@
 import pytest
 from app.domain.schemas import Restaurant
-from tests.unit.owner.conftest import *
-from app.service_layer.services import owner, restaurant
 
 
 @pytest.fixture
@@ -22,10 +20,4 @@ def invalid_restaurant_ex():
                       city="seoul",
                       kind="cafe")
 
-@pytest.fixture
-def create_restaurant(create_owner, restaurant_ex, override_get_uow):
-    restaurant.add_restaurant(1, restaurant_ex, override_get_uow)
 
-@pytest.fixture
-def create_owner(owner_ex, override_get_uow):
-    owner.add_owner(owner_ex, override_get_uow)
