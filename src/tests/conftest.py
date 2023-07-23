@@ -18,7 +18,7 @@ def override_get_uow():
     return fake_unit_of_work.FakeUnitOfWork(session_local)
 
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(scope="function")
 def client(override_get_uow):
     app.dependency_overrides[get_uow] = lambda: override_get_uow
     return TestClient(app)

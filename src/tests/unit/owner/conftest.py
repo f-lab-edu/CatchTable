@@ -1,7 +1,6 @@
 import pytest
 from app.domain.schemas import Owner
 
-
 @pytest.fixture
 def owner_ex():
     return Owner(name="kim chul su",
