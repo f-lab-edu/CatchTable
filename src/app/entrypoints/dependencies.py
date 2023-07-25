@@ -1,9 +1,8 @@
 from app.service_layer import unit_of_work
 from app import config
-from app.domain import model
+from app.domain import model, schemas
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
 
 
 def get_uow():
@@ -11,7 +10,3 @@ def get_uow():
     model.Base.metadata.create_all(bind=Engine)
     return unit_of_work.SqlAlchemyUnitOfWork(sessionmaker(bind=Engine))
 
-
-
-# 나중에 Token 관련 function
-# https://fastapi.tiangolo.com/tutorial/bigger-applications/
