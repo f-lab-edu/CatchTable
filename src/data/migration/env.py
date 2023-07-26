@@ -3,7 +3,7 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
 import sys, os
-from app.allocation.domain import model
+from app.domain import model
 
 sys.path.append(os.path.abspath('..'))
 
