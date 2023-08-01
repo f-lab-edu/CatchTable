@@ -3,7 +3,7 @@ from app.domain.schemas import Restaurant
 
 
 @pytest.fixture
-def restaurant_ex():
+def valid_restaurant():
     return Restaurant(name="starbucks",
                       description="World Wide Coffe Shop",
                       phone="000-000-0000",
@@ -12,7 +12,7 @@ def restaurant_ex():
                       kind="cafe")
 
 @pytest.fixture
-def invalid_restaurant_ex():
+def invalid_restaurant():
     return Restaurant(name=None,
                       description="World Wide Coffe Shop",
                       phone="000-000-0000",

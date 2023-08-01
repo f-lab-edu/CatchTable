@@ -9,17 +9,6 @@ from typing import List
 router = APIRouter()
 
 
-@router.post("/owners/", status_code=201, response_model=schemas.Owner)
-async def add_owner(owner: schemas.Owner, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
-    try:
-        result = services.add_owner(owner, uow)
-    except errors.InvalidDataException:
-        raise HTTPException(status_code=404, detail="invalid data")
-    except errors.DuplicatedException:
-        raise HTTPException(status_code=404, detail="existed data")
-    return result
-
-
 @router.get("/owners/{id}/", response_model=schemas.Owner)
 async def get_owner(id: int, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
     try:

@@ -39,6 +39,9 @@ class SqlAlchemyRepository(AbstractRepository):
     def get(self, model, id):
         return self.session.query(model).filter_by(id=id).first()
 
+    def get_user(self, model, email):
+        return self.session.query(model).filter_by(email=email).first()
+
     def get_menu(self, restaurant_id):
         return self.session.query(domain.Menu).filter_by(restaurant_id=restaurant_id).first()
 
@@ -67,8 +70,8 @@ class SqlAlchemyRepository(AbstractRepository):
     def refresh(self, model):
         self.session.refresh(model)
 
-    def is_owner_existed(self, name, phone):
-        return self.session.query(domain.Owner).filter_by(name=name, phone=phone).first()
+    def is_user_existed(self, model, email):
+        return self.session.query(model).filter_by(email=email).first()
 
     def is_restaurant_existed(self, owner_id, name, address):
         return self.session.query(domain.Restaurant).filter_by(owner_id=owner_id, name=name, address=address).first()

@@ -12,11 +12,15 @@ class Restaurant(BaseModel):
         orm_mode = True
 
 class Owner(BaseModel):
+    username: Union[str, None] = None
     name: Union[str, None] = None
     phone: Union[str, None] = None
     email: Union[str, None] = None
     class Config:
         orm_mode= True
+
+class OwnerCreate(Owner):
+    hashed_password: Union[str, None] = None
 
 class Menu(BaseModel):
     menu: Dict[str, int]

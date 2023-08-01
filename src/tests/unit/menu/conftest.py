@@ -3,7 +3,7 @@ from app.domain.schemas import Menu
 
 
 @pytest.fixture
-def menu_ex():
+def valid_menu():
     return Menu(menu={
                     'steak': 30000,
                     'pasta': 18000,
