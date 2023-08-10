@@ -26,7 +26,7 @@ def check_password_matched(
     try:
         matched = utils.verify_password(password, hashed_password)
         if not matched:
-            raise errors.PasswordNotMatchedException
+            raise errors.PasswordNotMatchedException("password not matched")
         return matched
     except errors.PasswordNotMatchedException:
         raise
