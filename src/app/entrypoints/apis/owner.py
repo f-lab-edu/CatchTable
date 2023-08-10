@@ -10,36 +10,46 @@ router = APIRouter()
 
 
 @router.get("/owners/{id}/", response_model=schemas.Owner)
-async def get_owner(id: int, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
+async def get_owner(
+    id: int, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]
+):
     try:
         result = services.get_owner(id, uow)
     except errors.NotFoundException:
-        raise HTTPException(status_code=404, detail='Unavailable data')
+        raise HTTPException(status_code=404, detail="Unavailable data")
     return result
 
 
 @router.get("/owners/", response_model=List[schemas.Owner])
-async def get_owner_list(uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
+async def get_owner_list(
+    uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]
+):
     try:
         result = services.get_owner_list(uow)
     except errors.NotFoundException:
-        raise HTTPException(status_code=404, detail='Unavailable data')
+        raise HTTPException(status_code=404, detail="Unavailable data")
     return result
 
 
 @router.put("/owners/{id}/", response_model=schemas.Owner)
-async def update_owner(id: int, owner: schemas.Owner, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
+async def update_owner(
+    id: int,
+    owner: schemas.Owner,
+    uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)],
+):
     try:
         result = services.update_owner(id, owner, uow)
     except errors.NotFoundException:
-        raise HTTPException(status_code=404, detail='Unavailable data')
+        raise HTTPException(status_code=404, detail="Unavailable data")
     return result
 
 
 @router.delete("/owners/{id}/", response_model=schemas.Owner)
-async def delete_owner(id: int, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]):
+async def delete_owner(
+    id: int, uow: Annotated[unit_of_work.AbstractUnitOfWork, Depends(get_uow)]
+):
     try:
         result = services.delete_owner(id, uow)
     except errors.NotFoundException:
-        raise HTTPException(status_code=404, detail='Unavailable data')
+        raise HTTPException(status_code=404, detail="Unavailable data")
     return result

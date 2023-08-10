@@ -3,7 +3,6 @@ from app.domain import model as domain
 
 
 class AbstractRepository(abc.ABC):
-
     @abc.abstractmethod
     def add(self, model):
         raise NotImplementedError
@@ -28,8 +27,8 @@ class AbstractRepository(abc.ABC):
     def refresh(self, model):
         raise NotImplementedError
 
-class SqlAlchemyRepository(AbstractRepository):
 
+class SqlAlchemyRepository(AbstractRepository):
     def __init__(self, session):
         self.session = session
 
@@ -43,7 +42,11 @@ class SqlAlchemyRepository(AbstractRepository):
         return self.session.query(model).filter_by(email=email).first()
 
     def get_menu(self, restaurant_id):
-        return self.session.query(domain.Menu).filter_by(restaurant_id=restaurant_id).first()
+        return (
+            self.session.query(domain.Menu)
+            .filter_by(restaurant_id=restaurant_id)
+            .first()
+        )
 
     def list(self, model):
         return self.session.query(model).all()
@@ -51,11 +54,11 @@ class SqlAlchemyRepository(AbstractRepository):
     def list_restaurants(self, model, filter=None, value=None):
         query = self.session.query(model)
 
-        if filter == 'name':
+        if filter == "name":
             return query.filter_by(name=value).all()
-        elif filter == 'city':
+        elif filter == "city":
             return query.filter_by(city=value).all()
-        elif filter == 'kind':
+        elif filter == "kind":
             return query.filter_by(kind=value).all()
 
     def update(self, model, updates):
@@ -74,5 +77,8 @@ class SqlAlchemyRepository(AbstractRepository):
         return self.session.query(model).filter_by(email=email).first()
 
     def is_restaurant_existed(self, owner_id, name, address):
-        return self.session.query(domain.Restaurant).filter_by(owner_id=owner_id, name=name, address=address).first()
-
+        return (
+            self.session.query(domain.Restaurant)
+            .filter_by(owner_id=owner_id, name=name, address=address)
+            .first()
+        )

@@ -6,6 +6,7 @@ from app.service_layer.services import menu as services
 
 router = APIRouter()
 
+
 @router.post("/restaurants/{id}/menus/", status_code=201, response_model=schemas.Menu)
 async def add_menu(id: int, menu: schemas.Menu, uow=Depends(get_uow)):
     try:
@@ -22,7 +23,7 @@ async def get_menu(id: int, uow=Depends(get_uow)):
     try:
         result = services.get_menu_for_restaurant(id, uow)
     except errors.NotFoundException:
-        raise HTTPException(status_code=404, detail='Unavailable data')
+        raise HTTPException(status_code=404, detail="Unavailable data")
     return result
 
 
@@ -31,5 +32,5 @@ async def update_menu(id: int, menu: schemas.Menu, uow=Depends(get_uow)):
     try:
         result = services.update_menu(id, menu, uow)
     except errors.NotFoundException:
-        raise HTTPException(status_code=404, detail='Unavailable data')
+        raise HTTPException(status_code=404, detail="Unavailable data")
     return result
