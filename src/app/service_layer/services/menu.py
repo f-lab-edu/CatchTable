@@ -2,7 +2,9 @@ from app.domain import schemas, model
 from app.service_layer import unit_of_work, errors
 
 
-def add_menu(restaurant_id: int, schema: schemas.Menu, uow: unit_of_work.AbstractUnitOfWork):
+def add_menu(
+    restaurant_id: int, schema: schemas.Menu, uow: unit_of_work.AbstractUnitOfWork
+):
     with uow:
         if not uow.batches.get(model.Restaurant, restaurant_id):
             raise errors.NotFoundException("invalid id")
@@ -27,7 +29,9 @@ def get_menu_for_restaurant(restaurant_id: int, uow: unit_of_work.AbstractUnitOf
     return result
 
 
-def update_menu(restaurant_id: int, schema: schemas.Menu, uow: unit_of_work.AbstractUnitOfWork):
+def update_menu(
+    restaurant_id: int, schema: schemas.Menu, uow: unit_of_work.AbstractUnitOfWork
+):
     with uow:
         menu = uow.batches.get_menu(restaurant_id)
         if not menu:

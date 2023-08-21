@@ -3,10 +3,10 @@ import json
 from tests.unit.owner.conftest import *
 
 @pytest.fixture
-def owner_ex_json(owner_ex):
-    return json.loads(owner_ex.json())
+def valid_owner_with_password_json(valid_owner_with_password):
+    return json.loads(valid_owner_with_password.json())
 
 @pytest.fixture
-def invalid_owner_ex_json(invalid_owner_ex):
-    return json.loads(invalid_owner_ex.json())
+def valid_owner_json(valid_owner):
+    return json.loads(valid_owner.json())
 

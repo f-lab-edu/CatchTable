@@ -11,6 +11,9 @@ Gitflow를 이용하여 Master, Develop, Feature로 branch를 구분하여 관�
 ## CatchTable Architecture 구조 
 ![CatchTable architecture](clean_architecture.png)
 
+## ER Diagram
+![CatchTable ER Diagram](er_diagram.png)
+
 ## Environments
 1. Python3.8
 2. Docker 1.42 (minimum 1.12)
