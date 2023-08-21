@@ -7,7 +7,9 @@ from tests.unit import fake_unit_of_work
 from app.domain import model
 import pytest
 
-engine = create_engine("sqlite:///./tests.db", connect_args={"check_same_thread": False})
+engine = create_engine(
+    "sqlite:///./tests.db", connect_args={"check_same_thread": False}
+)
 session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
@@ -22,6 +24,3 @@ def override_get_uow():
 def client(override_get_uow):
     app.dependency_overrides[get_uow] = lambda: override_get_uow
     return TestClient(app)
-
-
-

@@ -4,7 +4,6 @@ from app.adapters import repository
 
 
 class AbstractUnitOfWork(abc.ABC):
-
     batches: repository.AbstractRepository
 
     def __enter__(self) -> AbstractUnitOfWork:
@@ -23,7 +22,6 @@ class AbstractUnitOfWork(abc.ABC):
 
 
 class SqlAlchemyUnitOfWork(AbstractUnitOfWork):
-
     def __init__(self, session_factory):
         self.session_factory = session_factory
 
