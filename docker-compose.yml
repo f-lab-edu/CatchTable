@@ -27,6 +27,8 @@ services:
       - "8000:8000"
     depends_on:
       - db
+    environment:
+      - DATABASE_URL=postgresql://myuser:mypassword@db:5432/mydb
     tty: true
     volumes:
       - ./src:/src
