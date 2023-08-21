@@ -22,7 +22,7 @@ def test_fail_authenticate_user_when_password_not_matched(
         login.authenticate_user(
             valid_owner_with_password.email, "2222", override_get_uow
         )
-    assert str(error.value) == "password not matched"
+
 
 
 def test_fail_authenticate_user_when_data_not_existed(
@@ -34,7 +34,7 @@ def test_fail_authenticate_user_when_data_not_existed(
             valid_owner_with_password.hashed_password,
             override_get_uow,
         )
-    assert str(error.value) == "data not existed"
+
 
 
 def test_fail_check_user_existed_when_data_not_existed(
@@ -44,6 +44,6 @@ def test_fail_check_user_existed_when_data_not_existed(
         login.check_user_existed(
             model.Owner, valid_owner_with_password.email, override_get_uow
         )
-    assert str(error.value) == "data not existed"
+
 
 

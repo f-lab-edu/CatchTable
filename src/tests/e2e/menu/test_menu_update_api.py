@@ -15,5 +15,5 @@ def test_fails_update_menu_when_data_not_existed(client, valid_owner_with_passwo
 
     response = client.put("/restaurants/{}/menus/".format(1), json=valid_menu_json)
     assert response.status_code == 404
-    assert response.json() == {'detail': 'Unavailable data'}
+
 

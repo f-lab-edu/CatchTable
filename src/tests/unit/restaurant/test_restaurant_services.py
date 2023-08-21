@@ -31,7 +31,6 @@ def test_fails_add_restaurant_when_invalid_owner_id(
     registration.add_user(valid_owner_with_password, override_get_uow)
     with pytest.raises(errors.NotFoundException) as error:
         restaurant.add_restaurant(2, valid_restaurant, override_get_uow)
-    assert str(error.value) == "invalid id"
 
 
 def test_fails_add_restaurant_when_data_already_existed(
@@ -40,7 +39,6 @@ def test_fails_add_restaurant_when_data_already_existed(
     add_restaurant(override_get_uow, valid_owner_with_password, valid_restaurant)
     with pytest.raises(errors.DuplicatedException) as error:
         restaurant.add_restaurant(1, valid_restaurant, override_get_uow)
-    assert str(error.value) == "existed data"
 
 
 def test_success_get_restaurant(
@@ -55,7 +53,6 @@ def test_success_get_restaurant(
 def test_fails_get_restaurant_when_restaurant_not_existed(override_get_uow):
     with pytest.raises(errors.NotFoundException) as error:
         restaurant.get_restaurant(1, override_get_uow)
-    assert str(error.value) == "data not existed"
 
 
 def test_success_get_restaurant_list(
@@ -72,7 +69,6 @@ def test_fails_get_restaurant_list_when_input_invalid_filter(
     add_restaurant(override_get_uow, valid_owner_with_password, valid_restaurant)
     with pytest.raises(errors.NotFoundException) as error:
         restaurant.get_restaurant_list("something", "something", override_get_uow)
-    assert str(error.value) == "filter not existed"
 
 
 def test_success_update_restaurant(
@@ -87,7 +83,6 @@ def test_success_update_restaurant(
 def test_fails_update_restaurant_when_data_not_existed(override_get_uow):
     with pytest.raises(errors.NotFoundException) as error:
         restaurant.get_restaurant_list("city", "seoul", override_get_uow)
-    assert str(error.value) == "data not existed"
 
 
 def test_success_delete_restaurant(

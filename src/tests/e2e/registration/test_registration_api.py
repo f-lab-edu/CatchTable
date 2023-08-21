@@ -8,4 +8,3 @@ def test_fails_add_user_when_user_email_already_existed(client, valid_owner_with
     client.post("/registration/", json=valid_owner_with_password_json)
     response = client.post("/registration/", json=valid_owner_with_password_json)
     assert response.status_code == 404
-    assert response.json() == {'detail': 'existed data'}

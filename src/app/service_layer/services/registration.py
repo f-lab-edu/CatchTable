@@ -9,14 +9,14 @@ def add_user(
         if uow.batches.is_user_existed(model.Owner, schema.email):
             raise errors.DuplicatedException("existed data")
 
-        user_model = create_user_owner(schema)
+        user_model = get_owner_schema_with_password(schema)
         uow.batches.add(user_model)
         uow.commit()
         user_schema = schemas.Owner.from_orm(user_model)
     return user_schema
 
 
-def create_user_owner(schema: schemas.OwnerCreate) -> model.Owner:
+def get_owner_schema_with_password(schema: schemas.OwnerCreate) -> model.Owner:
     hashed_password = utils.get_password_hash(schema.hashed_password)
     return model.Owner(
         name=schema.name,

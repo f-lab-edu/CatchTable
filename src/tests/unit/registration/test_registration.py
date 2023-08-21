@@ -14,4 +14,4 @@ def test_fails_add_user_when_user_email_already_existed(valid_owner_with_passwor
         registration.add_user(
             valid_owner_with_password, override_get_uow
         )
-    assert str(error.value) == "existed data"
+

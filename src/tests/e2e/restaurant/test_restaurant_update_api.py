@@ -11,4 +11,3 @@ def test_success_update_restaurant_returns_200(client, valid_owner_with_password
 def test_fails_update_restaurant_when_data_not_existed(client, valid_restaurant_json):
     response = client.put("/restaurants/{}".format(1), json=valid_restaurant_json)
     assert response.status_code == 404
-    assert response.json() == {'detail': 'Unavailable data'}

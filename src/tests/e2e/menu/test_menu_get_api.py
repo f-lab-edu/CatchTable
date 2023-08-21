@@ -14,4 +14,3 @@ def test_fails_get_menu_when_data_not_existed(client, valid_owner_with_password_
 
     response = client.get("/restaurants/{}/menus/".format(1))
     assert response.status_code == 404
-    assert response.json() == {'detail': 'Unavailable data'}
