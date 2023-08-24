@@ -1,9 +1,15 @@
 name: pr tests
 
-on: [pull_request]
+on:
+  push:
+    branches:
+      - develop
+      - feature/kubernetes_yaml
 
 jobs:
-  test:
+  run-test:
+
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
