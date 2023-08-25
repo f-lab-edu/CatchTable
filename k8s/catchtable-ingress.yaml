@@ -2,8 +2,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: my-ingress
+  namespace: development
   annotations:
-    # nginx.ingress.kubernetes.io/rewrite-target: /
+    # nginx.ingress.k8s.io/rewrite-target: /
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
