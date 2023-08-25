@@ -2,7 +2,8 @@ import os
 
 
 def get_postgres_uri():
-    host = "db"
-    port = 5432
-    user, password, db_name = "myuser", "mypassword", "mydb"
-    return f"postgresql://{user}:{password}@{host}:{port}/{db_name}"
+    SQLALCHEMY_DATABASE_URL = os.environ.get("DATABASE_URL")
+    if SQLALCHEMY_DATABASE_URL is None:
+        raise ValueError("DATABASE_URL environment variable not set")
+
+    return SQLALCHEMY_DATABASE_URL

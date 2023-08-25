@@ -4,6 +4,7 @@ from sqlalchemy import pool
 from alembic import context
 import sys, os
 from app.domain import model
+from app.config import get_postgres_uri
 
 sys.path.append(os.path.abspath(".."))
 
@@ -41,7 +42,8 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    # url = config.get_main_option("sqlalchemy.url")
+    url = get_postgres_uri()
     context.configure(
         url=url,
         target_metadata=target_metadata,
