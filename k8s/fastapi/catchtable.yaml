@@ -16,14 +16,22 @@ spec:
       containers:
         - name: catchtable
           image: teeinn/catchtable:latest
-          env:
-          - name: DATABASE_URL
-            valueFrom:
-              secretKeyRef:
-                name: catchtable-secret
-                key: URL
           ports:
             - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: catchtable-secret
+          readinessProbe:
+            httpGet:
+              port: 8000
+              path: /docs
+            initialDelaySeconds: 15
+          livenessProbe:
+            httpGet:
+              port: 8000
+              path: /docs
+            initialDelaySeconds: 15
+            periodSeconds: 15
 
 
 

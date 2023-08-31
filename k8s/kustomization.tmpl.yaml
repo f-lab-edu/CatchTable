@@ -1,12 +1,9 @@
 resources:
 - namespaces_dev.yaml
-- namespaces_release.yaml
 - catchtable-secret.yaml
 - catchtable.yaml
 - catchtable-ingress.yaml
-- postgres-secret.yaml
-- postgres-storage.yaml
-- postgres.yaml
+
 
 images:
 - name: amazonaws.com/development
