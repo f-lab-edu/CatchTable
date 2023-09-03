@@ -57,8 +57,12 @@ jobs:
 
 
     - name: IAM configure
+      env:
+        TOKEN_CONFIG: ${{ secrets.NCP_TOKEN }}
       run: |
-        export KUBE_CONFIG_TOKEN=${{ secrets.NCP_TOKEN }}
+        TOKEN_CONFIG=
+        echo $TOKEN_CONFIG | base64 --decode > kubeconfig-token.yaml
+        echo $KUBE_CONFIG_TOKEN=kubeconfig-token.yaml
         kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development get pod
         kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development get deploy
         
