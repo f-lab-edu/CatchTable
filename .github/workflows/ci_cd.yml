@@ -66,16 +66,14 @@ jobs:
 
     - name: create kubeconfig file
       run: |
-        export NCP_ACCESS_KEY_ID=${{ secrets.NCP_ACCESS_KEY_ID }}
-        export NCP_SECRET_ACCESS_KEY=${{ secrets.NCP_SECRET_ACCESS_KEY }}
-        export NCP_API_GW=https://ncloud.apigw.ntruss.com
         mkdir .ncloud
         cat << EOF > .ncloud/configure
         [DEFAULT]
-        ncloud_access_key_id = echo $NCP_ACCESS_KEY_ID
-        ncloud_secret_access_key = echo $NCP_SECRET_ACCESS_KEY
+        ncloud_access_key_id = ${{ secrets.NCP_ACCESS_KEY_ID }}
+        ncloud_secret_access_key = ${{ secrets.NCP_SECRET_ACCESS_KEY }}
         ncloud_api_url = https://ncloud.apigw.ntruss.com
         EOF
+        cat ~/.ncloud/configure
         ncp-iam-authenticator create-kubeconfig --region KR --clusterUuid 9d102e02-a998-4d3f-b40f-d8c2be07f2ea --output kubeconfig.yaml
 
 #    - name: Install and configure kubectl
