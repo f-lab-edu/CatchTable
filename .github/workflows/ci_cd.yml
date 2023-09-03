@@ -70,7 +70,7 @@ jobs:
         export NCP_SECRET_ACCESS_KEY=${{ secrets.NCP_SECRET_ACCESS_KEY }}
         export NCP_API_GW=https://ncloud.apigw.ntruss.com
         mkdir .ncloud
-        cat << EOF > .ncloud/configure \
+        cat << EOF > .ncloud/configure
         [DEFAULT]
         ncloud_access_key_id = echo $NCP_ACCESS_KEY_ID
         ncloud_secret_access_key = echo $NCP_SECRET_ACCESS_KEY
