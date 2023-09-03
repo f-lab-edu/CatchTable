@@ -52,8 +52,8 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: |
-          ${{ secrets.NCP_CONTAINER_REGISTRY }}/catchtable:latest
-          ${{ secrets.NCP_CONTAINER_REGISTRY }}/catchtable:${{ env.SHORT_SHA }}
+          ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name:latest
+          ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name:${{ env.SHORT_SHA }}
 
 #    - name: Install and configure kubectl
 #      run: |
