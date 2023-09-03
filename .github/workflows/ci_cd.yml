@@ -64,7 +64,7 @@ jobs:
         echo 'export PATH=$PATH:$HOME/bin' >> ~/.bash_profile
         ncp-iam-authenticator help
         mkdir .ncloud
-        cat << EOF > .ncloud/configure
+        cat << EOF > ~/.ncloud/configure
         [DEFAULT]
         ncloud_access_key_id = ${{ secrets.NCP_ACCESS_KEY_ID }}
         ncloud_secret_access_key = ${{ secrets.NCP_SECRET_ACCESS_KEY }}
