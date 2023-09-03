@@ -5,9 +5,6 @@ on:
       - develop
       - feature/kubernetes_yaml
 
-env:
-  SHORT_SHA: $(echo ${{ github.sha }} | cut -c 1-8)
-
 jobs:
   run-test:
     runs-on: ubuntu-latest
@@ -52,8 +49,8 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: |
-          ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name:latest
-          ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name:${{ env.SHORT_SHA }}
+          ${{ secrets.NCP_CONTAINER_REGISTRY }}/catchtable:latest
+          ${{ secrets.NCP_CONTAINER_REGISTRY }}/catchtable:${{ github.run_number }}
 
 #    - name: Install and configure kubectl
 #      run: |
