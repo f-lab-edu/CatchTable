@@ -58,19 +58,10 @@ jobs:
 
     - name: IAM configure
       run: |
-        curl -o ncp-iam-authenticator https://kr.object.ncloudstorage.com/nks-download/ncp-iam-authenticator/v1.0.5/linux/amd64/ncp-iam-authenticator
-        chmod +x ./ncp-iam-authenticator
-        mkdir -p $HOME/bin && cp ./ncp-iam-authenticator $HOME/bin/ncp-iam-authenticator && export PATH=$PATH:$HOME/bin
-        echo 'export PATH=$PATH:$HOME/bin' >> ~/.bash_profile
-        ncp-iam-authenticator help
-        mkdir .ncloud
-        cat << EOF > ~/.ncloud/configure
-        [DEFAULT]
-        ncloud_access_key_id = ${{ secrets.NCP_ACCESS_KEY_ID }}
-        ncloud_secret_access_key = ${{ secrets.NCP_SECRET_ACCESS_KEY }}
-        ncloud_api_url = https://ncloud.apigw.ntruss.com
-        EOF
-        ncp-iam-authenticator create-kubeconfig --region KR --clusterUuid 9d102e02-a998-4d3f-b40f-d8c2be07f2ea --output kubeconfig.yaml
+        export KUBE_CONFIG_TOKEN=${{ secrets.NCP_TOKEN }}
+        kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development get pod
+        kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development get deploy
+        
 
 #    - name: Install and configure kubectl
 #      run: |
