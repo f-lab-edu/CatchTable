@@ -6,6 +6,6 @@ resources:
 
 
 images:
-- name: amazonaws.com/development
+- name: catchtable
   newName: ${ECR_REPOSITORY}
   newTag: ${IMAGE_TAG}
