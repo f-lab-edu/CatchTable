@@ -62,8 +62,6 @@ jobs:
       run: |
         echo $TOKEN_CONFIG | base64 --decode > kubeconfig-token.yaml
         export KUBE_CONFIG_TOKEN=kubeconfig-token.yaml
-        cp kubeconfig-token.yaml ~/.kube/config
-        kubectl -n development get pod
         kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development get pod
         kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development get deploy
 
