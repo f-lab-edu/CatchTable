@@ -78,7 +78,7 @@ jobs:
         echo $TOKEN_CONFIG | base64 --decode > kubeconfig-token.yaml
         export KUBE_CONFIG_TOKEN=kubeconfig-token.yaml
         export IMAGE_TAG=${{ env.SHORT_SHA }}
-        
+
         kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development apply -f k8s/base/namespace/namespaces_dev.yaml
       
         
