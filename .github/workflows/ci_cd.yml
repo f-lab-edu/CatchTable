@@ -67,8 +67,7 @@ jobs:
 
     - name: deploy pod
       run: |
-        cat k8s/base/namespace/namespaces_dev.yaml
-        kubectl --kubeconfig $KUBE_CONFIG_TOKEN get namespaces
+        kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development apply -f k8s/base/namespace/namespaces_dev.yaml
 
 #    - name: Setup kustomize
 #      run: |
