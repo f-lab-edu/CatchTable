@@ -80,7 +80,7 @@ jobs:
         export IMAGE_TAG=latest
 
         envsubst < k8s/base/kustomization.tmpl.yaml > k8s/base/kustomization.yaml
-        kubectl kustomize k8s | kubectl apply -f -
+#        kubectl kustomize k8s | kubectl apply -f -
       
         
 
