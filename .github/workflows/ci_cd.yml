@@ -55,6 +55,10 @@ jobs:
 #          ${{ secrets.NCP_CONTAINER_REGISTRY }}/catchtable:latest
 #          ${{ secrets.NCP_CONTAINER_REGISTRY }}/catchtable:${{ github.run_number }}
 
+    - name: Setup kustomize
+      run: |
+        curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
+        chmod u+x ./kustomize
 
     - name: Configure token for cluster access
       env:
@@ -64,15 +68,6 @@ jobs:
         export KUBE_CONFIG_TOKEN=kubeconfig-token.yaml
         kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development get pod
         kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development get deploy
-        kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development apply -f k8s/base/namespace/namespaces_dev.yaml
-
-    - name: Setup kustomize
-      run: |
-        curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
-        chmod u+x ./kustomize
-
-    - name: deploy pod
-      run: |
         kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development apply -f k8s/base/namespace/namespaces_dev.yaml
 
 
