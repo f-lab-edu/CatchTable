@@ -62,14 +62,14 @@ jobs:
 #        curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
 #        chmod u+x ./kustomize
 
-    - name: Configure token and install ingress controller
-      env:
-        TOKEN_CONFIG: ${{ secrets.NCP_TOKEN }}
-      run: |
-        echo $TOKEN_CONFIG | base64 --decode > kubeconfig-token.yaml
-        export KUBE_CONFIG_TOKEN=kubeconfig-token.yaml
-        kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development get pod
-        kubectl --kubeconfig $KUBE_CONFIG apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/cloud/deploy.yaml
+#    - name: Configure token and install ingress controller
+#      env:
+#        TOKEN_CONFIG: ${{ secrets.NCP_TOKEN }}
+#      run: |
+#        echo $TOKEN_CONFIG | base64 --decode > kubeconfig-token.yaml
+#        export KUBE_CONFIG_TOKEN=kubeconfig-token.yaml
+#        kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development get pod
+##        kubectl --kubeconfig $KUBE_CONFIG apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/cloud/deploy.yaml
 
     - name: deploy kustomization
       env:
@@ -78,8 +78,10 @@ jobs:
         echo $TOKEN_CONFIG | base64 --decode > kubeconfig-token.yaml
         export KUBE_CONFIG_TOKEN=kubeconfig-token.yaml
         export IMAGE_TAG=${{ env.SHORT_SHA }}
+        export IMAGE_TAG=latest
 
-        kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development apply -f k8s/base/namespace/namespaces_dev.yaml
+        envsubst < k8s/kustomization.tmpl.yaml > k8s/kustomization.yaml
+        kubectl kustomize k8s | kubectl apply -f -
       
         
 
