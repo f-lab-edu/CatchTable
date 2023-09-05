@@ -1,0 +1,11 @@
+resources:
+- namespace/namespaces_dev.yaml
+- fastapi/catchtable-secret.yaml
+- fastapi/catchtable.yaml
+- fastapi/catchtable-ingress.yaml
+
+
+images:
+- name: catchtable
+  newName: catchtable
+  newTag: ${IMAGE_TAG}
