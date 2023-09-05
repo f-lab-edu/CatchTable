@@ -69,11 +69,11 @@ jobs:
         echo $TOKEN_CONFIG | base64 --decode > kubeconfig-token.yaml
         export KUBE_CONFIG_TOKEN=kubeconfig-token.yaml
         export IMAGE_TAG=latest
+        export NCP_REGIS=${{ secrets.NCP_CONTAINER_REGISTRY }}
         
         kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development get pod
         kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development apply -f k8s/base/namespace/namespaces_dev.yaml
-        envsubst < k8s/base/kustomization.tmpl.yaml > k8s/base/kustomization.yaml
-        kubectl kustomize k8s | kubectl apply -f -
+        kustomize build k8s/base | kubectl apply -f -
         
 
 #    - name: deploy kustomization
@@ -84,7 +84,7 @@ jobs:
 #        export KUBE_CONFIG_TOKEN=kubeconfig-token.yaml
 #        export IMAGE_TAG=latest
 #
-#        envsubst < k8s/base/kustomization.tmpl.yaml > k8s/base/kustomization.yaml
+#        envsubst < k8s/base/kustomization.yaml > k8s/base/kustomization.yaml
 #        kubectl kustomize k8s | kubectl apply -f -
       
         
@@ -97,7 +97,7 @@ jobs:
 #        export ECR_REPOSITORY=${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}
 #        export IMAGE_TAG=${{ env.SHORT_SHA }}
 #        export KUBECONFIG=kubeconfig.yaml
-#        envsubst < k8s/kustomization.tmpl.yaml > k8s/kustomization.tmpl.yaml
+#        envsubst < k8s/kustomization.yaml > k8s/kustomization.yaml
 #        kubectl kustomize k8s | kubectl apply -f -
 
 

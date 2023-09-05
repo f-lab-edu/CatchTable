@@ -1,3 +1,6 @@
+
+namespace: development
+
 resources:
 - namespace/namespaces_dev.yaml
 - fastapi/catchtable-secret.yaml
@@ -7,5 +10,5 @@ resources:
 
 images:
 - name: catchtable
-  newName: catchtable
+  newName: ${NCP_REGIS}/catchtable
   newTag: ${IMAGE_TAG}
