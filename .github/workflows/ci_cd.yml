@@ -66,6 +66,7 @@ jobs:
         kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development get deploy
 
     - name: deploy pod
+      uses: actions/checkout@v3
       run: |
         ls k8s
 #        kubectl --kubeconfig $KUBE_CONFIG_TOKEN apply -f k8s/base/namespace/namespaces_dev.yaml
