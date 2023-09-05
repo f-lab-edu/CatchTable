@@ -72,8 +72,9 @@ jobs:
         
         kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development get pod
         kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development apply -f k8s/base/namespace/namespaces_dev.yaml
-        kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development apply -f k8s/base/fastapi/catchtable-ingress.yaml
         envsubst < k8s/base/kustomization.tmpl.yaml > k8s/base/kustomization.yaml
+        kubectl kustomize k8s | kubectl apply -f -
+        
 
 #    - name: deploy kustomization
 #      env:
