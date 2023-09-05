@@ -64,10 +64,11 @@ jobs:
         export KUBE_CONFIG_TOKEN=kubeconfig-token.yaml
         kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development get pod
         kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development get deploy
-
-    - name: deploy pod
-      run: |
         kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development apply -f k8s/base/namespace/namespaces_dev.yaml
+
+#    - name: deploy pod
+#      run: |
+#        kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development apply -f k8s/base/namespace/namespaces_dev.yaml
 
 #    - name: Setup kustomize
 #      run: |
