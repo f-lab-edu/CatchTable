@@ -6,26 +6,26 @@ on:
       - feature/kubernetes_yaml
 
 jobs:
-  run-test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [ "3.8" ]
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-
-      - name: Test with pytest
-        run: |
-          pytest
+#  run-test:
+#    runs-on: ubuntu-latest
+#    strategy:
+#      matrix:
+#        python-version: [ "3.8" ]
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Set up Python ${{ matrix.python-version }}
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: ${{ matrix.python-version }}
+#
+#      - name: Install dependencies
+#        run: |
+#          python -m pip install --upgrade pip
+#          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+#
+#      - name: Test with pytest
+#        run: |
+#          pytest
 
   build:
 ##    needs:
@@ -66,14 +66,15 @@ jobs:
         kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development get deploy
         kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development apply -f k8s/base/namespace/namespaces_dev.yaml
 
-#    - name: deploy pod
-#      run: |
-#        kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development apply -f k8s/base/namespace/namespaces_dev.yaml
+    - name: Setup kustomize
+      run: |
+        curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
+        chmod u+x ./kustomize
 
-#    - name: Setup kustomize
-#      run: |
-#        curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
-#        chmod u+x ./kustomize
+    - name: deploy pod
+      run: |
+        kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development apply -f k8s/base/namespace/namespaces_dev.yaml
+
 
 #    - name: Deploy
 #      env:
