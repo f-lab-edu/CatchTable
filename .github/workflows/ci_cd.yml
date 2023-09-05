@@ -68,18 +68,21 @@ jobs:
       run: |
         echo $TOKEN_CONFIG | base64 --decode > kubeconfig-token.yaml
         export KUBE_CONFIG_TOKEN=kubeconfig-token.yaml
-        kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development get pod
-#        kubectl --kubeconfig $KUBE_CONFIG apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/cloud/deploy.yaml
-
-    - name: deploy kustomization
-      env:
-        TOKEN_CONFIG: ${{ secrets.NCP_TOKEN }}
-      run: |
-        echo $TOKEN_CONFIG | base64 --decode > kubeconfig-token.yaml
-        export KUBE_CONFIG_TOKEN=kubeconfig-token.yaml
         export IMAGE_TAG=latest
-
+        
+        kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development get pod
+        kubectl --kubeconfig $KUBE_CONFIG_TOKEN -n development apply -f k8s/base/namespace/namespaces_dev.yaml
         envsubst < k8s/base/kustomization.tmpl.yaml > k8s/base/kustomization.yaml
+
+#    - name: deploy kustomization
+#      env:
+#        TOKEN_CONFIG: ${{ secrets.NCP_TOKEN }}
+#      run: |
+#        echo $TOKEN_CONFIG | base64 --decode > kubeconfig-token.yaml
+#        export KUBE_CONFIG_TOKEN=kubeconfig-token.yaml
+#        export IMAGE_TAG=latest
+#
+#        envsubst < k8s/base/kustomization.tmpl.yaml > k8s/base/kustomization.yaml
 #        kubectl kustomize k8s | kubectl apply -f -
       
         
