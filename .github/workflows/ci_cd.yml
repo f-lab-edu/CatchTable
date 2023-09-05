@@ -77,11 +77,10 @@ jobs:
       run: |
         echo $TOKEN_CONFIG | base64 --decode > kubeconfig-token.yaml
         export KUBE_CONFIG_TOKEN=kubeconfig-token.yaml
-        export IMAGE_TAG=${{ env.SHORT_SHA }}
         export IMAGE_TAG=latest
-
-        envsubst < k8s/kustomization.tmpl.yaml > k8s/kustomization.yaml
-        kubectl kustomize k8s | kubectl apply -f -
+#
+#        envsubst < k8s/kustomization.tmpl.yaml > k8s/kustomization.yaml
+#        kubectl kustomize k8s | kubectl apply -f -
       
         
 
