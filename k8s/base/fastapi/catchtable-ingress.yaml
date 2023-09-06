@@ -1,12 +1,18 @@
 apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: nginx
+spec:
+  controller: k8s.io/ingress-nginx
+---
+
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: my-ingress
   namespace: development
-  annotations:
-    # nginx.ingress.k8s.io/rewrite-target: /
-    kubernetes.io/ingress.class: nginx
 spec:
+  ingressClassName: nginx
   rules:
   - host: myapp.catchtable.com
     http:

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: catchtable
-          image: catchtable
+          image: 571847485322.dkr.ecr.ap-northeast-2.amazonaws.com/catchtable:latest
           ports:
             - containerPort: 8000
           envFrom:
@@ -36,27 +36,12 @@ spec:
 
 
 ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: catchtable
-# spec:
-#   type: LoadBalancer
-#   selector:
-#     app: catchtable
-#   ports:
-#     - port: 8000
-#       targetPort: 8000
-#       nodePort: 30000
-#       protocol: TCP
-
 apiVersion: v1
 kind: Service
 metadata:
   name: catchtable
   namespace: development
 spec:
-  type: NodePort
   selector:
     app: catchtable
   ports:
