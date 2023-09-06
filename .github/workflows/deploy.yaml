@@ -19,11 +19,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Install kubectl
-      uses: azure/setup-kubectl@v1
-      with:
-        version: 'v1.28.1'
-      id: install
+#    - name: Install kubectl
+#      uses: azure/setup-kubectl@v1
+#      with:
+#        version: 'v1.28.1'
+#      id: install
 
     - name: Configure AWS credentials
       uses: eks-actions/configure-eks-credentials@v1
