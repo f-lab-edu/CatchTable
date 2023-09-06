@@ -10,9 +10,6 @@ env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: catchtable
 
-permissions:
-  contents: read
-
 jobs:
   deploy:
     name: Build image
