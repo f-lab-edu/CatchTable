@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catchtable
+  namespace: development
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: catchtable
+  template:
+    metadata:
+      labels:
+        app: catchtable
+    spec:
+      containers:
+        - name: catchtable
+          image: 571847485322.dkr.ecr.ap-northeast-2.amazonaws.com/catchtable:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: catchtable-secret
+          readinessProbe:
+            httpGet:
+              port: 8000
+              path: /docs
+            initialDelaySeconds: 15
+          livenessProbe:
+            httpGet:
+              port: 8000
+              path: /docs
+            initialDelaySeconds: 15
+            periodSeconds: 15
+
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: catchtable
+  namespace: development
+spec:
+  selector:
+    app: catchtable
+  ports:
+    - port: 8000
+      targetPort: 8000
+      protocol: TCP

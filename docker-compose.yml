@@ -28,7 +28,10 @@ services:
     depends_on:
       - db
     environment:
-      - DATABASE_URL=postgresql://myuser:mypassword@db:5432/mydb
+      DATABASE_USERNAME: myuser
+      DATABASE_PASSWORD: mypassword
+      DATABASE_NAME: mydb
+      DATABASE_HOST: db
     tty: true
     volumes:
       - ./src:/src

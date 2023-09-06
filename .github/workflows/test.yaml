@@ -1,13 +1,17 @@
-name: pr tests
+name: test app
 
-on: [pull_request]
+on:
+  push:
+    branches:
+      - develop
+      - feature/kubernetes_yaml
 
 jobs:
-  test:
+  run-test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8"]
+        python-version: [ "3.8" ]
 
     steps:
       - uses: actions/checkout@v3
