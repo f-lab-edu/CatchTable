@@ -16,6 +16,7 @@ spec:
       containers:
         - name: catchtable
           image: 571847485322.dkr.ecr.ap-northeast-2.amazonaws.com/catchtable:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
           envFrom:
