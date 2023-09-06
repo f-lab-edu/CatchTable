@@ -56,7 +56,7 @@ metadata:
   name: catchtable
   namespace: development
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: catchtable
   ports:
